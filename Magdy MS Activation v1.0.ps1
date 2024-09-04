@@ -4,34 +4,6 @@
     Contact: The Lost Land
 #>
 
-# Check if the script is running with administrator privileges
-if (-not ([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)) {
-    # Relaunch the script with administrator privileges
-    Start-Process powershell -Verb RunAs -ArgumentList "-NoProfile -ExecutionPolicy Bypass -File `"$PSCommandPath`""
-    exit
-}
-
-# Function to create a local account XML snippet
-function CreateLocalAccount {
-    param (
-        [string]$username,
-        [string]$password,
-        [bool]$isAdmin
-    )
-
-    $group = if ($isAdmin) { "Administrators" } else { "Users" }
-
-    return @"
-                    <LocalAccount wcm:action="add">
-                        <Password>
-                            <Value>$password</Value>
-                            <PlainText>true</PlainText>
-                        </Password>
-                        <Name>$username</Name>
-                        <Group>$group</Group>
-                    </LocalAccount>
-"@
-}
 
 # Function to center text
 function CenterText {
